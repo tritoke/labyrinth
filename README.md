@@ -1,5 +1,8 @@
 # labyrinth
 A small maze building program written in rust.
 
+## Example maze
 ![](https://github.com/tritoke/labyrinth/blob/main/maze.png)
-![](https://github.com/tritoke/labyrinth/blob/main/video.mp4)
+
+## Example maze generation
+![](https://imgur.com/a/ZN0EmWo)

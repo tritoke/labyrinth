@@ -57,6 +57,8 @@ impl Maze {
 
                     stack.push((new_x, new_y));
                 } else {
+                    let tile: &mut TileState = self.data.get_mut(x, y).unwrap();
+                    *tile = TileState::Empty;
                     stack.truncate(stack.len() - 1);
                 }
             } else {
@@ -89,60 +91,53 @@ impl Maze {
 
         let mut count = 0;
 
-        let x_sub = x.checked_sub(1);
-        let y_sub = y.checked_sub(1);
+        let xs = x.saturating_sub(1);
+        let ys = y.saturating_sub(1);
 
         // do right / top / top right
-        if !matches!(self.data.get(x + 1, y), Some(TileState::Wall)) && !matches!(direction, West) {
+        if !matches!(self.data.get(x + 1, y), Some(TileState::Wall) | None) && !matches!(direction, West) {
             count += 1;
         }
 
-        if !matches!(self.data.get(x, y + 1), Some(TileState::Wall)) && !matches!(direction, South)
+        if !matches!(self.data.get(x, y + 1), Some(TileState::Wall) | None) && !matches!(direction, South)
         {
             count += 1;
         }
 
-        if !matches!(self.data.get(x + 1, y + 1), Some(TileState::Wall))
+        if !matches!(self.data.get(x + 1, y + 1), Some(TileState::Wall) | None)
             && !matches!(direction, South | West)
         {
             count += 1;
         }
 
-        // do left and top left
-        if let Some(xs) = x_sub {
-            if !matches!(self.data.get(xs, y), Some(TileState::Wall)) && !matches!(direction, East)
-            {
-                count += 1;
-            }
+        if !matches!(self.data.get(xs, y), Some(TileState::Wall) | None) && !matches!(direction, East)
+        {
+            count += 1;
+        }
 
-            if !matches!(self.data.get(xs, y + 1), Some(TileState::Wall))
-                && !matches!(direction, South | East)
-            {
-                count += 1;
-            }
+        if !matches!(self.data.get(xs, y + 1), Some(TileState::Wall) | None)
+            && !matches!(direction, South | East)
+        {
+            count += 1;
         }
 
         // do bottom and bottom right
-        if let Some(ys) = y_sub {
-            if !matches!(self.data.get(x, ys), Some(TileState::Wall)) && !matches!(direction, North)
-            {
-                count += 1;
-            }
+        if !matches!(self.data.get(x, ys), Some(TileState::Wall) | None) && !matches!(direction, North)
+        {
+            count += 1;
+        }
 
-            if !matches!(self.data.get(x + 1, ys), Some(TileState::Wall))
-                && !matches!(direction, North | West)
-            {
-                count += 1;
-            }
+        if !matches!(self.data.get(x + 1, ys), Some(TileState::Wall) | None)
+            && !matches!(direction, North | West)
+        {
+            count += 1;
         }
 
         // bottom left
-        if let (Some(xs), Some(ys)) = (x_sub, y_sub) {
-            if !matches!(self.data.get(xs, ys), Some(TileState::Wall))
-                && !matches!(direction, North | East)
-            {
-                count += 1;
-            }
+        if !matches!(self.data.get(xs, ys), Some(TileState::Wall) | None)
+            && !matches!(direction, North | East)
+        {
+            count += 1;
         }
 
         count == 0 && matches!(self.visited.get(x, y), Some(false))
