@@ -1,0 +1,15 @@
+[package]
+name = "labyrinth"
+version = "0.1.0"
+authors = ["Sam <tritoke@protonmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+structopt = "~0.3.21"
+png = "~0.16.8"
+rgb = "~0.8.25" 
+rand = { version = "~0.8.3", features = ["small_rng"] }
+anyhow = "~1.0.38"
+grid = "~0.2.3"
